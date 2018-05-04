@@ -93,7 +93,7 @@ def exe_commands(args):
     print("Running RiboCode ...")
     os.popen("GTFupdate ./intermediate/RNAseq.newnames.transcriptome.gtf > ./intermediate/RNAseq.processed.updated.gtf").read()
     os.popen("prepare_transcripts -g ./intermediate/RNAseq.processed.updated.gtf -o ./intermediate/RiboCode_annot -f " + args.refFa).read()
-    os.popen("metaplots -a ./intermediate/RiboCode_annot -r ./intermediate/Aligned.toTranscriptome.Bam").read()
+    os.popen("metaplots -a ./intermediate/RiboCode_annot -r ./intermediate/Aligned.toTranscriptome.out.bam").read()
     os.popen("RiboCode -a ./intermediate/RiboCode_annot -c metaplots_pre_config.txt -l no -g -o RiboCode_ORFs_result").read()
     print("Finished!")
     
