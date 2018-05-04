@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys, argparse
+import os, sys, argparse, subprocess, inspect
 
 def parse_arguments():
 
@@ -14,30 +14,45 @@ def parse_arguments():
 
     return parser.parse_args()
     
+def get_bin():
+    script_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    if os.path.isdir(script_dir+"/bin/"):
+        return script_dir+"/bin/"
+    else: # assume it is a symlink
+        p = subprocess.Popen(["readlink", "-f", "`which LOD.py`"], stdout=subprocess.PIPE, shell=True)
+        o, e = p.communicate()
+        p.wait()
+        #smthg/LOD.py
+        folders = o.split("/")
+        project_dir = "/".join(folders[:-1])
+        return project_dir+"bin/"
+
+
 
 def exe_commands(args):
 
     # Create directory to store intermediate files
+    bin = get_bin()
     
     os.popen("mkdir intermediate").read()
     # HISAT2
     print("Running HISAT2 ...")
 
-    os.popen("./bin/hisat2_extract_splice_sites.py " + args.refGTF + "> ./intermediate/reference.ss").read()
-    os.popen("./bin/hisat2_extract_exons.py " + args.refGTF + "> ./intermediate/reference.exon").read()
-    os.popen("./bin/hisat2-build -p " + str(args.n) + "--ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + "./intermediate/reference_ht2_index").read()
-    os.popen("./bin/hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNAseq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
+    os.popen(bin + "hisat2_extract_splice_sites.py " + args.refGTF + "> ./intermediate/reference.ss").read()
+    os.popen(bin + "hisat2_extract_exons.py " + args.refGTF + "> ./intermediate/reference.exon").read()
+    os.popen(bin + "hisat2-build -p " + str(args.n) + "--ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + "./intermediate/reference_ht2_index").read()
+    os.popen(bin + "hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNAseq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
     print("Finished!")
 
 
     # Samtools
     print("Running Samtools ...")
-    os.popen("./bin/samtools view -bS ./intermediate/RNAseq.alignedto.reference.sam | samtools sort > ./intermediate/RNAseq.sorted.bam").read()
+    os.popen(bin + "samtools view -bS ./intermediate/RNAseq.alignedto.reference.sam | samtools sort > ./intermediate/RNAseq.sorted.bam").read()
     print("Finished!")
 
     # StringTie
     print("Running StringTie ...")
-    os.popen("./bin/stringtie ./intermediate/RNAseq.sorted.bam -f " + str(args.f) + "-p 16 -G " + args.refGTF +"-o ./intermediate/RNAseq.transcriptome.gtf").read()
+    os.popen(bin + "stringtie ./intermediate/RNAseq.sorted.bam -f " + str(args.f) + "-p 16 -G " + args.refGTF +"-o ./intermediate/RNAseq.transcriptome.gtf").read()
     print("Finished!")
 
     # preprocess
@@ -48,8 +63,8 @@ def exe_commands(args):
     
     # STAR
     print("Running STAR ...")
-    os.popen("./bin/STAR --runThreadN " + str(args.n) + "--genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + "--sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
-    os.popen("./bin/STAR --outFilterType BySJout --runThreadN " + str(args.n) + "--outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +"--outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultmapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
+    os.popen(bin + "STAR --runThreadN " + str(args.n) + "--genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + "--sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
+    os.popen(bin + "STAR --outFilterType BySJout --runThreadN " + str(args.n) + "--outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +"--outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultmapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
     
     print("Finished!")
     
