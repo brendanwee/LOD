@@ -64,8 +64,8 @@ def exe_commands(args):
 
     # Samtools
     print("Running Samtools ...")
-    os.popen(bin + "samtools view -@ " + args.n + " -bS ./intermediate/RNAseq.alignedto.reference.sam > ./intermediate/RNAseq.alignedto.reference.bam")
-    os.popen(bin + "samtools sort -@ " + args.n + " ./intermediate/RNAseq.alignedto.reference.bam -o ./intermediate/RNAseq.sorted2.bam > ./intermediate/RNAseq.sorted.bam").read()
+    os.popen(bin + "samtools view -@ " + str(args.n) + " -bS ./intermediate/RNAseq.alignedto.reference.sam > ./intermediate/RNAseq.alignedto.reference.bam")
+    os.popen(bin + "samtools sort -@ " + str(args.n) + " ./intermediate/RNAseq.alignedto.reference.bam -o ./intermediate/RNAseq.sorted2.bam > ./intermediate/RNAseq.sorted.bam").read()
     print("Finished!")
 
     # StringTie
