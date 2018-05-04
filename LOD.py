@@ -64,8 +64,8 @@ def exe_commands(args):
 
     # Samtools
     print("Running Samtools ...")
-    os.popen(bin + "samtools view -bS ./intermediate/RNAseq.alignedto.reference.sam > ./intermediate/RNAseq.alignedto.reference.bam")
-    os.popen(bin + "samtools sort ./intermediate/RNAseq.alignedto.reference.bam > ./intermediate/RNAseq.sorted.bam").read()
+    os.popen(bin + "samtools view -@ " + args.n + " -bS ./intermediate/RNAseq.alignedto.reference.sam > ./intermediate/RNAseq.alignedto.reference.bam")
+    os.popen(bin + "samtools sort -@ " + args.n + " ./intermediate/RNAseq.alignedto.reference.bam -o ./intermediate/RNAseq.sorted2.bam > ./intermediate/RNAseq.sorted.bam").read()
     print("Finished!")
 
     # StringTie
@@ -75,8 +75,8 @@ def exe_commands(args):
 
     # preprocess
     print("Preprocessing ...")
-    os.popen("python ./bin/preprocessGTF.py ./intermediate/RNAseq.transcriptome.gtf "+ args.refGTF + " ./intermediate/RNAseq.processed.transcriptome.gtf").read()
-    os.popen("python ./bin/ChangeName.py ./intermediate/RNAseq.processed.transcriptome.gtf ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
+    os.popen("python " + bin + "preprocessGTF.py ./intermediate/RNAseq.transcriptome.gtf "+ args.refGTF + " ./intermediate/RNAseq.processed.transcriptome.gtf").read()
+    os.popen("python " + bin + "ChangeName.py ./intermediate/RNAseq.processed.transcriptome.gtf ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
     print("Finished!")
     
     # STAR
