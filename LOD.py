@@ -46,13 +46,13 @@ def exe_commands(args):
     if(args.i==""):
         # HISAT2
         print("Running HISAT2 ...")
-        print "extracting splice sites"
+        print("extracting splice sites")
         os.popen(bin + "hisat2_extract_splice_sites.py " + args.refGTF + " > ./intermediate/reference.ss").read()
-        print "extracting exons"
+        print("extracting exons")
         os.popen(bin + "hisat2_extract_exons.py " + args.refGTF + " > ./intermediate/reference.exon").read()
-        print "building index"
+        print("building index")
         os.popen(bin + "hisat2-build -p " + str(args.n) + " --ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + " ./intermediate/reference_ht2_index").read()
-        print "aligning reads"
+        print("aligning reads")
         os.popen(bin + "hisat2 -p " + str(args.n) + " -x ./intermediate/reference_ht2_index -U " + args.RNASeq + " -S ./intermediate/RNAseq.alignedto.reference.sam").read()
         print("Finished!")
     else:
