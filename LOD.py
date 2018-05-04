@@ -29,7 +29,7 @@ def get_bin():
         #smthg/LOD.py
         folders = o.split("/")
         project_dir = "/".join(folders[:-1])
-        return project_dir+"bin/"
+        return project_dir+"/bin/"
 
 
 
