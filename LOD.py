@@ -40,7 +40,6 @@ def exe_commands(args):
     bin = get_bin()
 
     os.popen("mkdir intermediate").read()
-<<<<<<< HEAD
     # HISAT2
     print("Running HISAT2 ...")
     print "extracting splice sites"
@@ -52,7 +51,6 @@ def exe_commands(args):
     print "aligning reads"
     os.popen(bin + "hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNASeq + " -S ./intermediate/RNAseq.alignedto.reference.sam").read()
     print("Finished!")
-=======
 
     if(args.i==1):
         # HISAT2
@@ -66,7 +64,6 @@ def exe_commands(args):
         print "aligning reads"
         os.popen(bin + "hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNASeq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
         print("Finished!")
->>>>>>> aa737919399c2abf89a5a99eb2484338a54e6dc1
 
 
     # Samtools
