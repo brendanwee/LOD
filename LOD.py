@@ -78,14 +78,17 @@ def exe_commands(args):
     os.popen("python " + bin + "preprocessGTF.py ./intermediate/RNAseq.transcriptome.gtf "+ args.refGTF + " ./intermediate/RNAseq.processed.transcriptome.gtf").read()
     os.popen("python " + bin + "ChangeName.py ./intermediate/RNAseq.processed.transcriptome.gtf ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
     print("Finished!")
-    
+
+    os.popen("mkdir experimental_genome").read()
+
+
     # STAR
     print("Running STAR ...")
-    os.popen(bin + "STAR --runThreadN " + str(args.n) + " --genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + " --sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
+    os.popen(bin + "STAR --runThreadN " + str(args.n) + "  --runMode genomeGenerate --genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + " --sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
     os.popen(bin + "STAR --outFilterType BySJout --runThreadN " + str(args.n) + " --outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +" --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultmapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
     
     print("Finished!")
-    
+
     # RiboCode
     print("Running RiboCode ...")
     os.popen("GTFupdate ./intermediate/RNAseq.newnames.transcriptome.gtf > ./intermediate/RNAseq.processed.updated.gtf").read()
