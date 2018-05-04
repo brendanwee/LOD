@@ -1,2 +1,0 @@
-# LOD
-Local ORF detector
