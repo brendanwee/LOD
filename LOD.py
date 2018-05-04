@@ -42,7 +42,7 @@ def exe_commands(args):
     os.popen("mkdir intermediate").read()
     # HISAT2
 
-    
+
     if(args.i==""):
         # HISAT2
         print("Running HISAT2 ...")
@@ -85,7 +85,7 @@ def exe_commands(args):
     # STAR
     print("Running STAR ...")
     os.popen(bin + "STAR --runThreadN " + str(args.n) + "  --runMode genomeGenerate --genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + " --sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
-    os.popen(bin + "STAR --outFilterType BySJout --runThreadN " + str(args.n) + " --outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +" --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultimapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
+    os.popen(bin + "STAR --outFilterType BySJout --runThreadN " + str(args.n) + " --outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +" --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultimapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/").read()
     
     print("Finished!")
 
@@ -93,7 +93,7 @@ def exe_commands(args):
     print("Running RiboCode ...")
     os.popen("GTFupdate ./intermediate/RNAseq.newnames.transcriptome.gtf > ./intermediate/RNAseq.processed.updated.gtf").read()
     os.popen("prepare_transcripts -g ./intermediate/RNAseq.processed.updated.gtf -o ./intermediate/RiboCode_annot -f " + args.refFa).read()
-    os.popen("metaplots -a ./intermediate/RiboCode_annot -r ./intermediate/Riboseq.AlignedTo.Transcriptome.Bam").read()
+    os.popen("metaplots -a ./intermediate/RiboCode_annot -r ./intermediate/Aligned.toTranscriptome.Bam").read()
     os.popen("RiboCode -a ./intermediate/RiboCode_annot -c metaplots_pre_config.txt -l no -g -o RiboCode_ORFs_result").read()
     print("Finished!")
     
