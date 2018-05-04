@@ -19,7 +19,11 @@ def get_bin():
     if os.path.isdir(script_dir+"/bin/"):
         return script_dir+"/bin/"
     else: # assume it is a symlink
-        p = subprocess.Popen(["readlink", "-f", "`which LOD.py`"], stdout=subprocess.PIPE, shell=True)
+        # ln -s /path/to/LOD.py /usr/local/bin/
+        # any dir typ LOD tab -> LOD.py
+        # call it
+        # return path to project folder bin
+        p = subprocess.Popen(["readlink", "`which LOD.py`"], stdout=subprocess.PIPE, shell=True)
         o, e = p.communicate()
         p.wait()
         #smthg/LOD.py
@@ -33,7 +37,7 @@ def exe_commands(args):
 
     # Create directory to store intermediate files
     bin = get_bin()
-    
+
     os.popen("mkdir intermediate").read()
     # HISAT2
     print("Running HISAT2 ...")
