@@ -11,7 +11,7 @@ def parse_arguments():
     parser.add_argument('--RiboSeq', dest='RiboSeq', type=str, required=True)
     parser.add_argument('--f', dest='f', type=int, default=0.9)
     parser.add_argument('--n', dest='n', type=int, default=25)
-    parser.add_argument('--i', dest='i', type=int, default=1)
+    parser.add_argument('--i', dest='i', type=str, default="")
 
     return parser.parse_args()
     
@@ -43,7 +43,7 @@ def exe_commands(args):
     # HISAT2
 
 
-    if(args.i==1):
+    if(args.i==""):
         # HISAT2
         print("Running HISAT2 ...")
         print "extracting splice sites"
