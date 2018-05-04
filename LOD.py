@@ -11,6 +11,7 @@ def parse_arguments():
     parser.add_argument('--RiboSeq', dest='RiboSeq', type=str, required=True)
     parser.add_argument('--f', dest='f', type=int, default=0.9)
     parser.add_argument('--n', dest='n', type=int, default=25)
+    parser.add_argument('--i', dest='i', type=int, default=1)
 
     return parser.parse_args()
     
@@ -23,13 +24,13 @@ def get_bin():
         # any dir typ LOD tab -> LOD.py
         # call it
         # return path to project folder bin
-        p = subprocess.Popen(["readlink", "`which LOD.py`"], stdout=subprocess.PIPE, shell=True)
+        p = subprocess.Popen(["readlink `which LOD.py`"], stdout=subprocess.PIPE, shell=True)
         o, e = p.communicate()
         p.wait()
         #smthg/LOD.py
         folders = o.split("/")
         project_dir = "/".join(folders[:-1])
-        return project_dir+"bin/"
+        return project_dir+"/bin/"
 
 
 
