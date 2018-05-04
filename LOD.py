@@ -23,7 +23,7 @@ def get_bin():
         # any dir typ LOD tab -> LOD.py
         # call it
         # return path to project folder bin
-        p = subprocess.Popen(["readlink", "`which LOD.py`"], stdout=subprocess.PIPE, shell=True)
+        p = subprocess.Popen(["readlink `which LOD.py`"], stdout=subprocess.PIPE, shell=True)
         o, e = p.communicate()
         p.wait()
         #smthg/LOD.py
