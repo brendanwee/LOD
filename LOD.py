@@ -42,7 +42,7 @@ def exe_commands(args):
     os.popen("mkdir intermediate").read()
     # HISAT2
 
-
+    
     if(args.i==""):
         # HISAT2
         print("Running HISAT2 ...")
@@ -79,13 +79,13 @@ def exe_commands(args):
     os.popen("python " + bin + "ChangeName.py ./intermediate/RNAseq.processed.transcriptome.gtf ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
     print("Finished!")
 
-    os.popen("mkdir experimental_genome").read()
+    os.popen("mkdir ./intermediate/experimental_genome").read()
 
 
     # STAR
     print("Running STAR ...")
     os.popen(bin + "STAR --runThreadN " + str(args.n) + "  --runMode genomeGenerate --genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + " --sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
-    os.popen(bin + "STAR --outFilterType BySJout --runThreadN " + str(args.n) + " --outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +" --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultmapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
+    os.popen(bin + "STAR --outFilterType BySJout --runThreadN " + str(args.n) + " --outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +" --outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultimapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
     
     print("Finished!")
 
