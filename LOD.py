@@ -53,12 +53,12 @@ def exe_commands(args):
         print "building index"
         os.popen(bin + "hisat2-build -p " + str(args.n) + " --ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + " ./intermediate/reference_ht2_index").read()
         print "aligning reads"
-        os.popen(bin + "hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNASeq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
+        os.popen(bin + "hisat2 -p " + str(args.n) + "-x ./intermediate/reference_ht2_index -U " + args.RNASeq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
         print("Finished!")
     else:
         print("Index Provided: Running HISAT2 ...")
         os.popen(
-            bin + "hisat2 -p 15 -x "+ args.i + " -U " + args.RNASeq + " -S ./intermediate/RNAseq.alignedto.reference.sam").read()
+            bin + "hisat2 -p " + str(args.n) + "-x "+ args.i + " -U " + args.RNASeq + " -S ./intermediate/RNAseq.alignedto.reference.sam").read()
         print("Finished!")
 
 
@@ -70,7 +70,7 @@ def exe_commands(args):
 
     # StringTie
     print("Running StringTie ...")
-    os.popen(bin + "stringtie ./intermediate/RNAseq.sorted.bam -f " + str(args.f) + "-p 16 -G " + args.refGTF + "-o ./intermediate/RNAseq.transcriptome.gtf").read()
+    os.popen(bin + "stringtie ./intermediate/RNAseq.sorted.bam -f " + str(args.f) + "-p " + str(args.n) + "-G " + args.refGTF + "-o ./intermediate/RNAseq.transcriptome.gtf").read()
     print("Finished!")
 
     # preprocess
