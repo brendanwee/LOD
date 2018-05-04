@@ -1,4 +1,6 @@
-import os, sys, argparse, subprocess
+#!/usr/bin/env python
+
+import os, sys, argparse
 
 def parse_arguments():
 
@@ -23,7 +25,7 @@ def exe_commands(args):
 
     os.popen("./bin/hisat2_extract_splice_sites.py " + args.refGTF + "> ./intermediate/reference.ss").read()
     os.popen("./bin/hisat2_extract_exons.py " + args.refGTF + "> ./intermediate/reference.exon").read()
-    os.popen("./bin/hisat2-build -p " + args.n + "--ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + "./intermediate/reference_ht2_index").read()
+    os.popen("./bin/hisat2-build -p " + str(args.n) + "--ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + "./intermediate/reference_ht2_index").read()
     os.popen("./bin/hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNAseq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
     print("Finished!")
 
@@ -35,7 +37,7 @@ def exe_commands(args):
 
     # StringTie
     print("Running StringTie ...")
-    os.popen("./bin/stringtie ./intermediate/RNAseq.sorted.bam -f " + args.f + "-p 16 -G " + args.refGTF +"-o ./intermediate/RNAseq.transcriptome.gtf").read()
+    os.popen("./bin/stringtie ./intermediate/RNAseq.sorted.bam -f " + str(args.f) + "-p 16 -G " + args.refGTF +"-o ./intermediate/RNAseq.transcriptome.gtf").read()
     print("Finished!")
 
     # preprocess
@@ -46,8 +48,8 @@ def exe_commands(args):
     
     # STAR
     print("Running STAR ...")
-    os.popen("./bin/STAR --runThreadN " + args.n + "--genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + "--sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
-    os.popen("./bin/STAR --outFilterType BySJout --runThreadN " + args.n + "--outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +"--outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultmapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
+    os.popen("./bin/STAR --runThreadN " + str(args.n) + "--genomeDir ./intermediate/experimental_genome/ --genomeFastaFiles " + args.refFa + "--sjdbGTFfile ./intermediate/RNAseq.newnames.transcriptome.gtf").read()
+    os.popen("./bin/STAR --outFilterType BySJout --runThreadN " + str(args.n) + "--outFilterMismatchNmax 2 --genomeDir ./intermediate/experimental_genome/ --readFilesIn "+ args.RiboSeq +"--outSAMtype BAM SortedByCoordinate --quantMode TranscriptomeSAM GeneCounts --outFilterMultmapNmax 1 --outFilterMatchNmin 16 --alignEndsType EndToEnd --outFileNamePrefix ./intermediate/Riboseq").read()
     
     print("Finished!")
     
