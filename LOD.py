@@ -48,7 +48,7 @@ def exe_commands(args):
     print "building index"
     os.popen(bin + "hisat2-build -p " + str(args.n) + " --ss ./intermediate/reference.ss --exon ./intermediate/reference.exon " + args.refFa + " ./intermediate/reference_ht2_index").read()
     print "aligning reads"
-    os.popen(bin + "hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNASeq + "-S ./intermediate/RNAseq.alignedto.reference.sam").read()
+    os.popen(bin + "hisat2 -p 15 -x ./intermediate/reference_ht2_index -U " + args.RNASeq + " -S ./intermediate/RNAseq.alignedto.reference.sam").read()
     print("Finished!")
 
 
